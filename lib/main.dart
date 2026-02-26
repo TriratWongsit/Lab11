@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'data/repositories/note_repository.dart';
 import 'ui/home_page.dart';
-import 'ui/state/note_store.dart';
+import 'ui/state/event_store.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,17 +15,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<NoteRepository>(create: (_) => NoteRepository()),
-        ChangeNotifierProvider<NoteStore>(
-          create: (context) => NoteStore(context.read<NoteRepository>()),
-        ),
+        ChangeNotifierProvider(create: (_) => EventStore()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter + SQLite Notes',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
           useMaterial3: true,
+          colorSchemeSeed: Colors.blue,
         ),
         home: const HomePage(),
       ),

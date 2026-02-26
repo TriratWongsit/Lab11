@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 class AppDatabase {
   AppDatabase._();
   static final AppDatabase instance = AppDatabase._();
-  static const dbName = 'notes_app.db';
+  static const dbName = 'event_planner.db'; // เปลี่ยนชื่อ DB
   static const dbVersion = 1;
   Database? _db;
 
@@ -21,24 +21,61 @@ class AppDatabase {
     return openDatabase(
       dbPath,
       version: dbVersion,
-      onCreate: (db, version) async {
-        await createTables(db);
-      },
       onConfigure: (db) async {
+        // เปิด Foreign Key Support [cite: 124]
         await db.execute('PRAGMA foreign_keys = ON');
+      },
+      onCreate: (db, version) async {
+        await _createTables(db);
+        await _seedData(db); // เพิ่มข้อมูลเริ่มต้น
       },
     );
   }
 
-  Future<void> createTables(Database db) async {
+  Future<void> _createTables(Database db) async {
+    // 1. ตาราง Categories [cite: 593]
     await db.execute('''
-      CREATE TABLE notes (
+      CREATE TABLE categories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        content TEXT NOT NULL,
-        created_at TEXT NOT NULL,
-        updated_at TEXT NOT NULL
+        name TEXT NOT NULL,
+        color_hex TEXT NOT NULL,
+        icon_key TEXT NOT NULL
       )
     ''');
+
+    // 2. ตาราง Events [cite: 599]
+    await db.execute('''
+      CREATE TABLE events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT,
+        category_id INTEGER NOT NULL,
+        event_date TEXT NOT NULL,
+        start_time TEXT NOT NULL,
+        end_time TEXT NOT NULL,
+        status TEXT NOT NULL,
+        priority INTEGER NOT NULL,
+        FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE RESTRICT
+      )
+    ''');
+  }
+
+  // สร้างข้อมูลตัวอย่าง 3 หมวดหมู่ ตามโจทย์ข้อ 7 (Testing Checklist) [cite: 630]
+  Future<void> _seedData(Database db) async {
+    await db.insert('categories', {
+      'name': 'ทำงาน',
+      'color_hex': 'FF2196F3', // Blue
+      'icon_key': 'work',
+    });
+    await db.insert('categories', {
+      'name': 'ส่วนตัว',
+      'color_hex': 'FF4CAF50', // Green
+      'icon_key': 'person',
+    });
+    await db.insert('categories', {
+      'name': 'เร่งด่วน',
+      'color_hex': 'FFF44336', // Red
+      'icon_key': 'warning',
+    });
   }
 }
