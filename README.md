@@ -1,16 +1,2 @@
-# flutter_sqlite_notes_demo
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img width="1585" height="927" alt="Screenshot 2569-02-26 at 17 21 18" src="https://github.com/user-attachments/assets/21226675-8c4e-45fe-9ab5-21e9f66e963a" />
+<img width="798" height="1720" alt="image" src="https://github.com/user-attachments/assets/e25e2bd9-0bb5-4b9f-a732-1f5b66447d76" />
